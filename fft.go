@@ -4,12 +4,22 @@ import (
 	"math"
 )
 
-func NewFFT(n int) CoefComplex {
+func NewFFT(n int) *CoefPairComplex {
 	coef := make([][]complex128, n)
 	for i := 0; i < n; i++ {
 		coef[i] = FFTCoefs(i, n)
 	}
-	return coef
+	inv := make([][]complex128, n)
+	for i := 0; i < n; i++ {
+		inv[i] = make([]complex128, n)
+		for j := 0; j < n; j++ {
+			inv[i][j] = conjugate(coef[i][j])
+		}
+	}
+	return &CoefPairComplex{
+		Transform: coef,
+		Inverse:   inv,
+	}
 }
 
 func Expi(x float64) complex128 {
@@ -33,12 +43,12 @@ func FFTCoefs(x, n int) []complex128 {
 
 func FFT(f []complex128) []complex128 {
 	fft := NewFFT(len(f))
-	return fft.Transform(f)
+	return fft.Transform.Do(f)
 }
 
 func IFFT(fs []complex128) []complex128 {
 	fft := NewFFT(len(fs))
-	return fft.Inverse(fs)
+	return fft.Inverse.Do(fs)
 }
 
 func IFFTOne(fs []complex128, x int) complex128 {
