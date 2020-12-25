@@ -43,7 +43,7 @@ func (fft *FFTBox) Coefficient() [][]complex128 {
 	return fft.coef
 }
 
-func (fft *FFTBox) FFT(f []complex128) []complex128 {
+func (fft *FFTBox) Transform(f []complex128) []complex128 {
 	out := make([]complex128, fft.n)
 	for i := 0; i < fft.n; i++ {
 		var total complex128
@@ -55,7 +55,7 @@ func (fft *FFTBox) FFT(f []complex128) []complex128 {
 	return out
 }
 
-func (fft *FFTBox) IFFT(fs []complex128) []complex128 {
+func (fft *FFTBox) Inverse(fs []complex128) []complex128 {
 	out := make([]complex128, fft.n)
 	for i := 0; i < fft.n; i++ {
 		var total complex128
@@ -69,12 +69,12 @@ func (fft *FFTBox) IFFT(fs []complex128) []complex128 {
 
 func FFT(f []complex128) []complex128 {
 	fft := NewFFT(len(f))
-	return fft.FFT(f)
+	return fft.Transform(f)
 }
 
 func IFFT(fs []complex128) []complex128 {
 	fft := NewFFT(len(fs))
-	return fft.IFFT(fs)
+	return fft.Inverse(fs)
 }
 
 func IFFTOne(fs []complex128, x int) complex128 {
