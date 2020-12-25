@@ -15,10 +15,7 @@ func NewFFT(n int) *FFTBox {
 		coef: make([][]complex128, n),
 	}
 	for i := 0; i < n; i++ {
-		fft.coef[i] = make([]complex128, n)
-		for x := 0; x < n; x++ {
-			fft.coef[i][x] = FFTCoef(i, x, n)
-		}
+		fft.coef[i] = FFTCoefs(i, n)
 	}
 	return fft
 }
@@ -32,6 +29,14 @@ func Expi(x float64) complex128 {
 
 func FFTCoef(i, x, n int) complex128 {
 	return Expi(-2 * math.Pi * float64(i) * float64(x) / float64(n))
+}
+
+func FFTCoefs(x, n int) []complex128 {
+	out := make([]complex128, n)
+	for i := 0; i < n; i++ {
+		out[i] = FFTCoef(i, x, n)
+	}
+	return out
 }
 
 func (fft *FFTBox) Coefficient() [][]complex128 {
@@ -75,8 +80,8 @@ func IFFT(fs []complex128) []complex128 {
 func IFFTOne(fs []complex128, x int) complex128 {
 	n := len(fs)
 	var total complex128
-	for i, f := range fs {
-		total += f * FFTCoef(i, x, n)
+	for i, c := range FFTCoefs(x, n) {
+		total += fs[i] * c
 	}
 	return total
 }
