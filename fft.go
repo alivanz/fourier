@@ -4,20 +4,12 @@ import (
 	"math"
 )
 
-type FFTBox struct {
-	n    int
-	coef [][]complex128
-}
-
-func NewFFT(n int) *FFTBox {
-	fft := &FFTBox{
-		n:    n,
-		coef: make([][]complex128, n),
-	}
+func NewFFT(n int) CoefComplex {
+	coef := make([][]complex128, n)
 	for i := 0; i < n; i++ {
-		fft.coef[i] = FFTCoefs(i, n)
+		coef[i] = FFTCoefs(i, n)
 	}
-	return fft
+	return coef
 }
 
 func Expi(x float64) complex128 {
@@ -35,34 +27,6 @@ func FFTCoefs(x, n int) []complex128 {
 	out := make([]complex128, n)
 	for i := 0; i < n; i++ {
 		out[i] = FFTCoef(i, x, n)
-	}
-	return out
-}
-
-func (fft *FFTBox) Coefficient() [][]complex128 {
-	return fft.coef
-}
-
-func (fft *FFTBox) Transform(f []complex128) []complex128 {
-	out := make([]complex128, fft.n)
-	for i := 0; i < fft.n; i++ {
-		var total complex128
-		for x, v := range f {
-			total += v * fft.coef[i][x]
-		}
-		out[i] = complex(real(total)/float64(fft.n), imag(total)/float64(fft.n))
-	}
-	return out
-}
-
-func (fft *FFTBox) Inverse(fs []complex128) []complex128 {
-	out := make([]complex128, fft.n)
-	for i := 0; i < fft.n; i++ {
-		var total complex128
-		for x, v := range fs {
-			total += v * conjugate(fft.coef[i][x])
-		}
-		out[i] = total
 	}
 	return out
 }
