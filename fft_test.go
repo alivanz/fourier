@@ -20,11 +20,11 @@ func TestFFT(t *testing.T) {
 	inv := IFFT(out)
 	t.Log(inv)
 	for i, v := range inv {
-		diff := v - in[i]
-		if math.Abs(real(diff)) > 0.0001 {
+		diff := round(v - in[i])
+		if math.Abs(real(diff)) > 0 {
 			t.Fail()
 		}
-		if math.Abs(imag(diff)) > 0.0001 {
+		if math.Abs(imag(diff)) > 0 {
 			t.Fail()
 		}
 	}
