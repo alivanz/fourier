@@ -22,4 +22,20 @@ func TestDCT(t *testing.T) {
 	if !reflect.DeepEqual(in, inv) {
 		t.Fail()
 	}
+	for i, ref := range []complex128{
+		complex(1, 0),
+		complex(2, 0),
+		complex(3, 0),
+		complex(4, 0),
+		complex(4, 0),
+		complex(3, 0),
+		complex(2, 0),
+		complex(1, 0),
+	} {
+		v := round(IDCT(out, float64(i)))
+		t.Log(v)
+		if v != ref {
+			t.Fail()
+		}
+	}
 }

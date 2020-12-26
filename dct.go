@@ -37,3 +37,15 @@ func NewDCT(n int) *CoefPairComplex {
 		Inverse:   inv,
 	}
 }
+
+func IDCT(fs []complex128, x float64) complex128 {
+	var total complex128
+	l := float64(len(fs))
+	for i, f := range fs {
+		total += f * complex(
+			math.Cos(math.Pi*(float64(x)+0.5)*float64(i)/l),
+			0,
+		)
+	}
+	return total
+}
