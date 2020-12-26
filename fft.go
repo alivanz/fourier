@@ -17,7 +17,8 @@ func NewFFT(n int) *CoefPairComplex {
 	for i := 0; i < n; i++ {
 		coef[i] = make([]complex128, n)
 		for j := 0; j < n; j++ {
-			coef[i][j] = complex(real(inv[i][j])/l, -imag(inv[i][j])/l)
+			c := conjugate(inv[i][j])
+			coef[i][j] = div(c, l)
 		}
 	}
 	return &CoefPairComplex{
