@@ -5,20 +5,18 @@ import (
 )
 
 func NewFFT(n int) *CoefPairComplex {
+	coef := make([][]complex128, n)
 	inv := make([][]complex128, n)
 	for i := 0; i < n; i++ {
+		coef[i] = make([]complex128, n)
 		inv[i] = make([]complex128, n)
-		for j := 0; j < n; j++ {
-			inv[i][j] = Expi(2 * math.Pi * float64(i) * float64(j) / float64(n))
-		}
 	}
 	l := float64(n)
-	coef := make([][]complex128, n)
 	for i := 0; i < n; i++ {
-		coef[i] = make([]complex128, n)
 		for j := 0; j < n; j++ {
-			c := conjugate(inv[i][j])
+			c := Expi(-2 * math.Pi * float64(i) * float64(j) / float64(n))
 			coef[i][j] = div(c, l)
+			inv[i][j] = conjugate(c)
 		}
 	}
 	return &CoefPairComplex{
