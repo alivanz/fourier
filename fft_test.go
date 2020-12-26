@@ -1,7 +1,6 @@
 package fourier
 
 import (
-	"math"
 	"math/rand"
 	"testing"
 )
@@ -15,16 +14,22 @@ func TestFFT(t *testing.T) {
 		complex(rand.Float64(), rand.Float64()),
 	}
 	t.Log(in)
-	out := FFT(in)
+	fft := NewFFT(len(in))
+	out := fft.Transform.Do(in)
 	t.Log(out)
-	inv := IFFT(out)
+	inv := fft.Inverse.Do(out)
 	t.Log(inv)
 	for i, v := range inv {
 		diff := round(v - in[i])
-		if math.Abs(real(diff)) > 0 {
+		if diff != 0 {
 			t.Fail()
 		}
-		if math.Abs(imag(diff)) > 0 {
+	}
+	// Test Cont
+	for i := 0; i < len(in)*2; i++ {
+		v := IFFT(out, float64(i))
+		diff := round(v - in[i%len(in)])
+		if diff != 0 {
 			t.Fail()
 		}
 	}

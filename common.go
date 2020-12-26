@@ -4,6 +4,13 @@ import (
 	"math"
 )
 
+func Expi(x float64) complex128 {
+	return complex(
+		math.Cos(x),
+		math.Sin(x),
+	)
+}
+
 func conjugate(c complex128) complex128 {
 	return complex(real(c), -imag(c))
 }

@@ -22,6 +22,7 @@ func TestDCT(t *testing.T) {
 	if !reflect.DeepEqual(in, inv) {
 		t.Fail()
 	}
+	// Test Cont
 	for i, ref := range []complex128{
 		complex(1, 0),
 		complex(2, 0),

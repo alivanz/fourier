@@ -27,19 +27,11 @@ func NewFFT(n int) *CoefPairComplex {
 	}
 }
 
-func Expi(x float64) complex128 {
-	return complex(
-		math.Cos(x),
-		math.Sin(x),
-	)
-}
-
-func FFT(f []complex128) []complex128 {
-	fft := NewFFT(len(f))
-	return fft.Transform.Do(f)
-}
-
-func IFFT(fs []complex128) []complex128 {
-	fft := NewFFT(len(fs))
-	return fft.Inverse.Do(fs)
+func IFFT(fs []complex128, x float64) complex128 {
+	var total complex128
+	l := float64(len(fs))
+	for i, f := range fs {
+		total += f * Expi(2*math.Pi*float64(i)*x/l)
+	}
+	return total
 }
