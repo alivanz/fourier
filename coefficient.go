@@ -30,9 +30,17 @@ func Transpose(in [][]complex128) [][]complex128 {
 	out := make([][]complex128, y)
 	for j := 0; j < y; j++ {
 		out[j] = make([]complex128, x)
+	}
+	TransposeFill(out, in)
+	return out
+}
+
+func TransposeFill(out, in [][]complex128) {
+	x := len(in)
+	y := len(in[0])
+	for j := 0; j < y; j++ {
 		for i := 0; i < x; i++ {
 			out[j][i] = in[i][j]
 		}
 	}
-	return out
 }
